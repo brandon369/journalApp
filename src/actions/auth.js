@@ -1,14 +1,31 @@
 import {types} from "../types/types";
-import {createUserWithEmailAndPassword, updateProfile, getAuth, signInWithPopup} from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getAuth,
+  signInWithPopup,
+  signInWithEmailAndPassword
+
+} from 'firebase/auth';
 // import { getAuth, signInWithPopup } from 'firebase/auth';
 import {googleAuthProvider} from '../firebase/firebase-config'
 
 export const startLoginEmailPassword = (email, password) => {
 
   return (dispatch) => {
-    setTimeout(() => {
-      dispatch(login(21232, 'Jaime'))
-    }, 3500)
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(({user}) => {
+        console.log(user)
+        dispatch(login(user.id, user.displayName))
+
+      })
+      .catch(e => console.log(e))
+
+    // setTimeout(() => {
+    //   dispatch(login(21232, 'Jaime'))
+    // }, 3500)
+
   }
 }
 
@@ -35,7 +52,7 @@ export const starRegister = (email, password, name) => {
         dispatch(login(user.id, user.displayName))
 
       })
-      .catch(e=> console.log(e))
+      .catch(e => console.log(e))
   }
 }
 

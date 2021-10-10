@@ -18,7 +18,6 @@ const LoginScreen = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    // dispatch(login(22222,'ssser'))
     dispatch(startLoginEmailPassword(email, password))
 
 
