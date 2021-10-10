@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Route, BrowserRouter as Router, Switch, Redirect} from "react-router-dom";
 import AuthRouter from "./AuthRouter";
 import JournalScreen from "../components/journal/JournalScreen";
@@ -10,6 +10,9 @@ const AppRouter = () => {
 
   const dispatch = useDispatch()
 
+  const [checking, setChecking] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -17,27 +20,40 @@ const AppRouter = () => {
 
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName))
+        setIsLoggedIn(true)
+      }else{
+        setIsLoggedIn(false)
       }
+
+      setChecking(false)
 
 
     })
-  }, [dispatch]);
+  }, [dispatch, setChecking, setIsLoggedIn]);
+
+  if (checking) {
+    return (
+      <h1>Loading...</h1>
+    )
+
+  } else {
 
 
-  return (
-    <Router>
-      <div>
-        <Switch>
-          <Route path='/auth' component={AuthRouter}/>
-          <Route exact path='/' component={JournalScreen}/>
-          <Redirect to='/auth/login'/>
+    return (
+      <Router>
+        <div>
+          <Switch>
+            <Route path='/auth' component={AuthRouter}/>
+            <Route exact path='/' component={JournalScreen}/>
+            <Redirect to='/auth/login'/>
 
-        </Switch>
-      </div>
+          </Switch>
+        </div>
 
-    </Router>
+      </Router>
 
-  )
+    )
+  }
 }
 
 export default AppRouter
