@@ -4,7 +4,8 @@ import {
   updateProfile,
   getAuth,
   signInWithPopup,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signOut
 
 } from 'firebase/auth';
 // import { getAuth, signInWithPopup } from 'firebase/auth';
@@ -72,4 +73,17 @@ export const login = (uid, displayName) => ({
 
 })
 
+
+export const startLogout = () => {
+
+  return async (dispatch) => {
+    const auth = getAuth();
+    await signOut(auth);
+    dispatch(logout())
+  }
+}
+
+export const logout = () => ({
+  type: types.logout
+})
 
