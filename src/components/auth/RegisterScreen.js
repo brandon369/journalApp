@@ -2,13 +2,15 @@ import React from 'react'
 import {Link} from "react-router-dom";
 import {useForm} from "../../hooks/useForm";
 import validator from 'validator'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {removeError, serError} from "../../actions/ui";
+import {starRegister} from "../../actions/auth";
 
 const RegisterScreen = () => {
 
   const dispatch = useDispatch()
+  const {msgError} = useSelector(state => state.ui)
 
   const [values, handleInputChange] = useForm({
     name: 'brandon',
@@ -20,27 +22,26 @@ const RegisterScreen = () => {
 
   const {name, email, password, password2} = values
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault()
 
 
-    if(isFormValid()){
-
-
+    if (isFormValid()) {
       console.log('Valid Form')
+      dispatch(starRegister(email,password, name))
     }
 
   }
 
   const isFormValid = () => {
 
-    if(name.trim().length === 0){
+    if (name.trim().length === 0) {
       errorMessage('Name is required')
       return false
-    }else if(!validator.isEmail(email)){
+    } else if (!validator.isEmail(email)) {
       errorMessage('Email no valid')
       return false
-    }else if(password !== password2 || password.length < 5){
+    } else if (password !== password2 || password.length < 5) {
       errorMessage('Password invalid')
       return false
     }
@@ -61,9 +62,13 @@ const RegisterScreen = () => {
 
         <form onSubmit={handleSubmit}>
 
-          <div className='auth__alert-error'>
-            Hola Erro
-          </div>
+
+          {msgError && (
+
+            <div className='auth__alert-error'>
+              {msgError}
+            </div>
+          )}
 
           <input
             type='text'

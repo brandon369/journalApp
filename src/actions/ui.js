@@ -1,7 +1,7 @@
 import {types} from "../types/types";
 
 export const serError = (err) => ({
-  type: types.login,
+  type: types.uiSetError,
   payload: err
 })
 

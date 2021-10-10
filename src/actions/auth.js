@@ -1,6 +1,7 @@
 import {types} from "../types/types";
-import { getAuth, signInWithPopup } from 'firebase/auth';
-import { googleAuthProvider} from '../firebase/firebase-config'
+import {createUserWithEmailAndPassword, updateProfile, getAuth, signInWithPopup} from 'firebase/auth';
+// import { getAuth, signInWithPopup } from 'firebase/auth';
+import {googleAuthProvider} from '../firebase/firebase-config'
 
 export const startLoginEmailPassword = (email, password) => {
 
@@ -13,13 +14,28 @@ export const startLoginEmailPassword = (email, password) => {
 
 
 export const startGoogleLogin = () => {
-  return(dispatch) => {
+  return (dispatch) => {
     const auth = getAuth();
     signInWithPopup(auth, googleAuthProvider)
-      .then(({user}) =>{
+      .then(({user}) => {
         console.log(user)
         dispatch(login(user.uid, user.displayName))
       });
+  }
+}
+
+export const starRegister = (email, password, name) => {
+  return (dispatch) => {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async ({user}) => {
+
+        await updateProfile(user, {displayName: name});
+        console.log(user)
+        dispatch(login(user.id, user.displayName))
+
+      })
+      .catch(e=> console.log(e))
   }
 }
 
@@ -32,3 +48,5 @@ export const login = (uid, displayName) => ({
   }
 
 })
+
+
