@@ -1,0 +1,25 @@
+import {types} from "../types/types";
+
+const initailStat = {
+  loading: false,
+  msgError: null
+}
+
+export const uiReducer = (state = initailStat, action) => {
+  switch (action.type) {
+    case types.uiSetError :
+      return {
+        ...state,
+        msgError: action.payload
+      }
+    case types.uiRemoveError :
+      return {
+        ...state,
+        msgError: null
+
+      }
+    default:
+      return state
+
+  }
+}
