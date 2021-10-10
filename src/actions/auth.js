@@ -11,6 +11,10 @@ import {
 // import { getAuth, signInWithPopup } from 'firebase/auth';
 import {googleAuthProvider} from '../firebase/firebase-config'
 import {finishLoading, startLoading} from "./ui";
+import Swal from 'sweetalert2'
+
+
+
 
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
@@ -24,8 +28,8 @@ export const startLoginEmailPassword = (email, password) => {
 
       })
       .catch(e => {
-        console.log(e)
         dispatch(finishLoading())
+        Swal.fire('Error', 'Email or user incorrect', 'error')
 
       })
 
@@ -59,7 +63,10 @@ export const starRegister = (email, password, name) => {
         dispatch(login(user.id, user.displayName))
 
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        Swal.fire('Error', 'Email exist', 'error')
+
+      })
   }
 }
 
