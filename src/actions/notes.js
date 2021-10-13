@@ -12,8 +12,7 @@ export const starNewNote = () => {
       date: new Date().getTime()
     }
 
-    const doc = await addDoc(collection(db, uid, "journal/notes"), newNote)
-    console.log("Document written with ID: ", doc);
+    const doc = await addDoc(collection(db, `${uid}/journal/notes`), newNote)
 
     dispatch(activeNote(doc.id, newNote))
 
@@ -28,4 +27,10 @@ export const activeNote = (id, note) => ({
     id,
     ...note
   }
+})
+
+
+export const setNote = (notes) => ({
+  type: types.notesLoad,
+  payload: notes
 })
