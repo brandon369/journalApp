@@ -3,6 +3,7 @@ import {collection, addDoc, updateDoc, doc} from "firebase/firestore";
 import {types} from "../types/types";
 import {loadNotes} from "../helpers/loadNotes";
 import Swal from "sweetalert2";
+import {fileUpload} from "../helpers/fileUpload";
 
 export const starNewNote = () => {
   return async (dispatch, getState) => {
@@ -74,3 +75,29 @@ export const refreshNote = (id, note) => ({
     }
   }
 })
+
+
+export const startUploading = (file) => {
+  return async (dispatch, getState)=>{
+    const {active} = getState().notes
+
+    Swal.fire({
+      title: 'Uploading...',
+      text: 'Please await...',
+      allowOutsideClick: false,
+      willOpen: () =>{
+        Swal.showLoading();
+      }
+    });
+
+    const fileURl= await fileUpload(file)
+
+    active.url = fileURl
+    dispatch(startSaveNote(active))
+
+    Swal.close();
+
+
+  }
+}
+
