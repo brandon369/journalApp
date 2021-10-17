@@ -31,6 +31,14 @@
 
   }
 
+  &-danger{
+    transition: all .3s ease-in-out;
+    background-color: red;
+    &:hover {
+      background-color: darken(red, 15);
+    }
+  }
+
   &-block{
     width: 100%;
   }
