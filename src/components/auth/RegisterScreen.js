@@ -28,7 +28,7 @@ const RegisterScreen = () => {
 
     if (isFormValid()) {
       console.log('Valid Form')
-      dispatch(starRegister(email,password, name))
+      dispatch(starRegister(email, password, name))
     }
 
   }
@@ -60,7 +60,10 @@ const RegisterScreen = () => {
       <>
         <h3 className='auth__title'>Register</h3>
 
-        <form onSubmit={handleSubmit}>
+        <form
+          className='animate__animated animate__fadeIn animate__faster'
+          onSubmit={handleSubmit}
+        >
 
 
           {msgError && (
